@@ -1,0 +1,27 @@
+Kafka Broker setup - List of all commands used
+
+//to start the zookeeper
+cd /opt/kafka
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+//configure kafka config/server.properties
+listeners=PLAINTEXT://0.0.0.0:9092
+advertised.listeners=PLAINTEXT://172.24.63.248:9092
+
+//to start the kafka
+cd /opt/kafka
+bin/kafka-server-start.sh config/server.properties
+
+// to create the topics
+bin/kafka-topics.sh --create --topic topic-cpu  --bootstrap-server 172.24.63.248:9092 --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --create --topic topic-mem  --bootstrap-server 172.24.63.248:9092 --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --create --topic topic-net  --bootstrap-server 172.24.63.248:9092 --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --create --topic topic-disk --bootstrap-server 172.24.63.248:9092 --partitions 1 --replication-factor 1
+
+
+// To perform quick test if producer and consumer are able to communicate
+bin/kafka-console-producer.sh --topic topic-cpu --bootstrap-server 172.24.63.248:9092
+# type messages, Ctrl+C to exit
+bin/kafka-console-consumer.sh --topic topic-cpu --bootstrap-server 172.24.63.248:9092 --from-beginning
+
+
